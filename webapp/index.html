@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=0"/>
+    <title>Shake</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        body.active {
+            background-color: rgb(200, 255, 200);
+        }
+
+        @keyframes shake {
+            10%, 90% {
+                transform: translate3d(-0.125rem, 0, 0);
+            }
+
+            20%, 80% {
+                transform: translate3d(0.25rem, 0, 0);
+            }
+
+            30%, 50%, 70% {
+                transform: translate3d(-0.5rem, 0, 0);
+            }
+
+            40%, 60% {
+                transform: translate3d(0.5rem, 0, 0);
+            }
+        }
+        
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+        }
+
+        #shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both 5;
+        }
+
+        #checkmark {
+            color: silver;
+        }
+
+        #checkmark.done {
+            color: green;
+        }
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="main">
+        <img class="logo" src="logo.svg" style="" alt="BankEx">
+        <img id="shake" src="shake.png" style="width: 200 height: 200;" alt="Shake Me">
+        <i id="checkmark" class="fa fa-5x fa-check-circle"></i>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/alexgibson/shake.js/master/shake.js"></script>
+    <script>
+        if (!("ondevicemotion" in window)) {
+            alert("Your device dows not support shake detection");
+        }
+
+        var shakeEvent = new Shake({threshold: 15});
+        shakeEvent.start();
+        window.addEventListener('shake', function(){
+            $("#checkmark").addClass("done");
+            $("body").addClass("active");
+
+            setTimeout(function() {
+                $("#checkmark").removeClass("done");
+                $("body").removeClass("active");
+            }, 3000);
+        }, false);
+
+        function stopShake(){
+            shakeEvent.stop();
+        }
+    </script>
+</body>
+</html>
